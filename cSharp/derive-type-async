@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>DeriveTypeAsync</Title>
+      <Author>Chad Smith (chad.e.smith@outlook.com)</Author>
+      <Description>Static class that converts an HttpResponseMessage from json to the specified type. Returns either the object or a null object.</Description>
+      <Shortcut>getType</Shortcut>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp" Kind="method decl">
+        <![CDATA[
+        /// <summary>
+        /// Derive a type of T object from an HttpResponseMessage
+        /// </summary>
+        /// <typeparam name="T">Type of object to deserialize</typeparam>
+        /// <param name="response">This HttpResponseMessage</param>
+        /// <returns>Deserialized object of type T</returns>
+        public static async Task<T> DeriveTypeAsync<T>(this HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                T returnObject = JsonConvert.DeserializeObject<T>(jsonString);
+                return returnObject;
+            }
+
+            return default;
+        }
+        ]]>
+      </Code>
+      <References>
+        <Reference>
+          <Assembly>Newtonsoft.Json</Assembly>
+        </Reference>
+        <Reference>
+          <Assembly>System.Net.Http</Assembly>
+        </Reference>
+      </References>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
